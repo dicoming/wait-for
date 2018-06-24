@@ -27,7 +27,7 @@ wait_for() {
   for i in `seq $TIMEOUT` ; do
     if [ $SPRING_HEALTH_CHECK -gt 0 ] ; then
         output=$(curl -s http://${HOST}:${PORT}/health)
-        if [[ $output =~ .*\"status\":\"UP\".* ]] ; then
+        if [[ $output =~ .*\"status\":\"UP\".* ]]; then
            result=0;
         else
            result=1;
@@ -37,11 +37,11 @@ wait_for() {
         result=$?
     fi
     if [ $result -eq 0 ] ; then
+      end_ts=$(date +%s)
+      echo "$cmdname: $HOST:$PORT is available after $((end_ts - start_ts)) seconds"
       if [ $# -gt 0 ] ; then
         exec "$@"
       fi
-      end_ts=$(date +%s)
-      echo "$cmdname: $HOST:$PORT is available after $((end_ts - start_ts)) seconds"
       exit 0
     fi
     sleep 1
