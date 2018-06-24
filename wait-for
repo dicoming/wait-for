@@ -25,10 +25,9 @@ USAGE
 wait_for() {
   start_ts=$(date +%s)
   for i in `seq $TIMEOUT` ; do
-    if [[ $SPRING_HEALTH_CHECK -gt 0 ]]; then
+    if [ $SPRING_HEALTH_CHECK -gt 0 ] ; then
         output=$(curl -s http://${HOST}:${PORT}/health)
-        if [[ $output =~ .*\"status\":\"UP\".* ]]
-        then
+        if [[ $output =~ .*\"status\":\"UP\".* ]] ; then
            result=0;
         else
            result=1;
@@ -47,7 +46,7 @@ wait_for() {
     fi
     sleep 1
   done
-  echo "Operation timed out" >&2
+  echo "$cmdname: $HOST:$PORT is not available after $TIMEOUT seconds" >&2
   exit 1
 }
 
@@ -90,9 +89,13 @@ do
   esac
 done
 
+SPRING_HEALTH_CHECK=${SPRING_HEALTH_CHECK:-0}
+
 if [ "$HOST" = "" -o "$PORT" = "" ]; then
   echoerr "Error: you need to provide a host and port to test."
   usage 2
 fi
+
+echo "$cmdname: waiting readiness of $HOST:$PORT ..."
 
 wait_for "$@"
