@@ -11,11 +11,21 @@ When using this tool, you only need to pick the `wait-for` file as part of your 
 ```
 ./wait-for host:port [-t timeout] [-- command args]
   -q | --quiet                        Do not output any status messages
+  -shc | --spring-health-check        Check readiness of Spring application by requesting /health method
+                                      which provided by Spring Boot Actuator
   -t TIMEOUT | --timeout=timeout      Timeout in seconds, zero for no timeout
   -- COMMAND ARGS                     Execute command with args after the test finishes
 ```
 
 ## Examples
+
+To check if Spring Boot applications with Spring Boot Actuator is available:
+
+```
+$ ./wait-for localhost:80 --spring-health-check
+
+wait-for: localhost:8761 is available after 0 seconds
+```
 
 To check if [eficode.com](https://eficode.com) is available:
 
